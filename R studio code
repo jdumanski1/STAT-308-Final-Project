@@ -6,3 +6,9 @@ anova(mod_bank)
 mod_back <- step(mod_bank, direction = "backward", trace = 0) #step process with backwards deletion 
 
 mod_forward <- step(mod_bank, direction = "forward", trace = 0) #step process with forwards adding 
+
+library(tidyverse)
+
+profitability <- bankruptcy %>% #new dataframe with selected columns based on profitability
+  select(Bankrupt., Operating.Gross.Margin, Realized.Sales.Gross.Margin, Pre.tax.net.Interest.Rate, 
+  Operating.Profit.Growth.Rate, Cash.Flow.to.Equity, Total.income.Total.expense)
