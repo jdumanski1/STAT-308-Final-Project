@@ -15,6 +15,9 @@ profitability <- bankruptcy %>% #new dataframe with selected columns based on pr
   Total.Asset.Turnover, ROA.A..before.interest.and...after.tax, ROA.B..before.interest.and.depreciation.after.tax, 
   ROA.C..before.interest.and.depreciation.before.interest) # 
 
+growth_rates <- bankruptcy %>% 
+  select(contains("growth")) #growth rate category dataframe
+
 mod_profit <- glm(Bankrupt. ~., data = profitability, family = binomial)
 summary(mod_profit) 
 plot(mod_profit, 1)
