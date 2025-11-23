@@ -27,7 +27,9 @@ mod_back <- step(mod_profit, direction = "backward", trace = 0) #keeps 4 predict
 
 mod_forward <- step(mod_profit, direction = "forward", trace = 0) #keeps 6 predictors 
 
-liquidity<- bankruptcy%>%select(Bankrupt.,Current.Ratio,Quick.Ratio,Cash.Flow.to.Total.Assets,Cash.Current.Liability,Working.Capital.to.Total.Assets,Long.term.fund.suitability.ratio..A.,Quick.Assets.Total.Assets)
+
+liquidity<- bankruptcy%>% select(Bankrupt.,Current.Ratio,Quick.Ratio,Cash.Flow.to.Total.Assets,Cash.Current.Liability,
+Working.Capital.to.Total.Assets,Long.term.fund.suitability.ratio..A.,Quick.Assets.Total.Assets)
 
 mod_liquid<-glm(Bankrupt.~.,data=liquidity,family=binomial)
 summary(mod_liquid)
@@ -36,8 +38,16 @@ plot(mod_liquid,1)
 plot(mod_liquid,2)
 #a warning popped up that said not plotting observations with leverage one:2500
 
-mod_back<-step(mod_liquid, direction="backward",trace=0)
+mod_back<-step(mod_liquid, direction="backward",trace=1)
 mod_back
+#start AIC=1672.9
+#removed current.ratio since, without this variable AIC went down to 1671.1 (so 6 variables total)
 
-mod_forward<-step(mod_liquid,direction="forward",trace=0)
+mod_forward<-step(mod_liquid,direction="forward",trace=1)
 mod_forward
+#the AIC for full model is 1673
+#forward selection implied that all the variable should be included in the model, however, 
+#there were a lot of variables close to zero which are likely not statistically significant but yet, 
+#the forward model implies that none should be removed (all 7 kept)
+
+#therefore, the backward selection is more optimal given that it lead to a better AIC score of 1672.9
