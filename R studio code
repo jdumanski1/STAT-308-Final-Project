@@ -1,5 +1,7 @@
 bankruptcy <- read.csv("[path]/data.csv") #read in the file
 
+### Generic model code 
+
 mod_bank <- lm(Bankrupt. ~ ., data = bankruptcy) #simple linear regression with all variables
 anova(mod_bank)
 
@@ -9,29 +11,39 @@ mod_forward <- step(mod_bank, direction = "forward", trace = 0) #step process wi
 
 library(tidyverse)
 
+
+### Profitability 
+
+
 profitability <- bankruptcy %>% #new dataframe with selected columns based on profitability
   select(Bankrupt., Operating.Gross.Margin, Realized.Sales.Gross.Margin, Pre.tax.net.Interest.Rate, 
   Operating.Profit.Rate, Cash.Flow.to.Equity, Total.income.Total.expense, Revenue.Per.Share..Yuan..., 
   Total.Asset.Turnover, ROA.A..before.interest.and...after.tax, ROA.B..before.interest.and.depreciation.after.tax, 
-  ROA.C..before.interest.and.depreciation.before.interest) # 
-
-growth_rates <- bankruptcy %>% 
-  select(contains("growth")) #growth rate category dataframe
+  ROA.C..before.interest.and.depreciation.before.interest) #profitability dataframe 
 
 mod_profit <- glm(Bankrupt. ~., data = profitability, family = binomial)
 summary(mod_profit) 
-plot(mod_profit, 1)
-plot(mod_profit, 2)
+plot(mod_profit, 1) # these are useless for generalized linear modeling!
+plot(mod_profit, 2) # ^ 
 
 mod_back <- step(mod_profit, direction = "backward", trace = 0) #keeps 4 predictors  
-
 mod_forward <- step(mod_profit, direction = "forward", trace = 0) #keeps 6 predictors 
 
 
-liquidity<- bankruptcy%>% select(Bankrupt.,Current.Ratio,Quick.Ratio,Cash.Flow.to.Total.Assets,Cash.Current.Liability,
-Working.Capital.to.Total.Assets,Long.term.fund.suitability.ratio..A.,Quick.Assets.Total.Assets)
+### Growth Rates 
 
-mod_liquid<-glm(Bankrupt.~.,data=liquidity,family=binomial)
+
+growth_rates <- bankruptcy %>% 
+  select(contains("growth")) #growth rate category dataframe, 8 total predictors 
+
+
+### Liquidity 
+
+
+liquidity<- bankruptcy%>% select(Bankrupt.,Current.Ratio,Quick.Ratio,Cash.Flow.to.Total.Assets,Cash.Current.Liability,
+Working.Capital.to.Total.Assets,Long.term.fund.suitability.ratio..A.,Quick.Assets.Total.Assets) # liquidity dataframe 
+
+mod_liquid<-glm(Bankrupt.~.,data=liquidity,family=binomial) # liquidity generalized linear model 
 summary(mod_liquid)
 
 plot(mod_liquid,1)
