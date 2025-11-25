@@ -116,7 +116,9 @@ summary(mod_back)
 mod_forward<-step(mod_liquid,direction="forward",trace=0)
 summary(mod_forward)
 #the AIC for full model is 1673
-#forward selection implied that all the variable should be included in the model, however, there were a lot of variables close to zero which are likely not statistically significant but yet, the forward model implies that none should be removed (all 7 kept)
+#forward selection implied that all the variable should be included in the model, 
+however, there were a lot of variables close to zero which are likely not statistically 
+significant but yet, the forward model implies that none should be removed (all 7 kept)
 
 #therefore, the backward selection is more optimal given that it lead to a better AIC score of 1672.9
 mod_best_liquid<-step(mod_liquid,direction="both",trace=0)
@@ -129,7 +131,8 @@ summary(mod_no_outliers_liq)
 
 mod_back_liq<-step(mod_no_outliers_liq,direction="backward",trace=0)
 summary(mod_back_liq)
-#intercept, cash.flow.to.total.assets, cash.current.libaility,working.capital.to.total.assets,quick.assets.total.assets (not included: current.ratio,quick.ratio,Long.term.fund.suitability.ratio..A.)
+#intercept, cash.flow.to.total.assets, cash.current.libaility,working.capital.to.total.assets,quick.assets.total.assets 
+(not included: current.ratio,quick.ratio,Long.term.fund.suitability.ratio..A.)
 #AIC: 1630.4
 
 mod_forward_liq<-step(mod_no_outliers_liq,direction="forward",trace=0)
@@ -146,7 +149,10 @@ chi2
 p<-pchisq(chi2,df=4,lower.tail=FALSE)
 p
 #p=1.67619e-62
-#We reject the null at a significant level of 0.05 for a logistic regression model predicting the probability of bankruptcy by the intercept, cash.flow.to.total.assets, cash.current.libaility,working.capital.to.total.assets,quick.assets.total.assets is statistically significant.
+#We reject the null at a significant level of 0.05 for a logistic regression model 
+predicting the probability of bankruptcy by 
+the intercept, cash.flow.to.total.assets, cash.current.libaility,
+working.capital.to.total.assets,quick.assets.total.assets is statistically significant.
 
 library(ROCR)
 pred<-predict(mod_back,type="response")
