@@ -266,4 +266,13 @@ p <- pchisq(chi2, df=4, lower.tail=FALSE)
 # p-value = 1.742x10^-89
 ```
 
+# FULL MODEL 
+
+full_model2 <- glm(Bankrupt. ~ Total.income.Total.expense + Cash.Flow.to.Equity + Operating.Profit.Growth.Rate + Cash.Flow.to.Total.Assets + Cash.Current.Liability + Working.Capital.to.Total.Assets + Quick.Assets.Total.Assets + Debt.ratio.. + Operating.Funds.to.Liability +
+                    Liability.Assets.Flag + Equity.to.Liability + Quick.Assets.Current.Liability + 
+                    Net.Value.Growth.Rate + Continuous.Net.Profit.Growth.Rate, bankruptcy, family = binomial)
+summary(full_model2)
+
+full_model3 <- bankruptcy %>%
+  filter(hatvalues(full_model2) < 0.05) #removed outliers based on hat values being larger than 0.05
 
