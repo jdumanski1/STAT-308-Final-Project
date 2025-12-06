@@ -276,3 +276,18 @@ summary(full_model2)
 full_model3 <- bankruptcy %>%
   filter(hatvalues(full_model2) < 0.05) #removed outliers based on hat values being larger than 0.05
 
+
+
+####ROC CODE AND AUC CODE
+#install ROCR package
+
+library(ROCR)
+pred<-predict(model,type="response")
+rocpred<-prediction(pred,datafram$Bankrupt.)
+roc<-performance(rocpred,"tpr","fpr")
+plot(roc)
+
+#area under the curve
+auc<-performance(rocpred,measure="auc")
+auc@y.values
+
